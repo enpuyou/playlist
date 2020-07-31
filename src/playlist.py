@@ -24,22 +24,30 @@ def get_playlist_by_id():
 
 # get tracks in the playlist
 def get_tracks():
+    track_lst = []
     tracks = sp.playlist_tracks(playlist_uri)
 
-    for track in tracks["items"]:
+    for index, track in enumerate(tracks["items"]):
+        artist_lst = []
         # pp.pprint(track)
-        print(f"album: {track['track']['album']['name']}")
+        album = track['track']['album']['name']
+        print(f"album: {album}")
         for artist in track['track']['artists']:
-            print(f"artist: {artist['name']}")
+            artist_name = artist['name']
+            artist_lst.append(artist_name)
+            print(f"artist: {artist_name}")
         track_name = track['track']['name']
         print(f"track name: {track_name}")
         cover_art_url = track['track']['album']['images'][0]['url']
         print(f"cover art: {cover_art_url}")
-        f = open(f'{track_name}.jpg', 'wb')
-        f.write(requests.get(cover_art_url).content)
-        f.close()
+        # f = open(f'{track_name}.jpg', 'wb')
+        # f.write(requests.get(cover_art_url).content)
+        # f.close()
+        sep = ", "
+        track_lst.append(f"{index + 1}. {track_name} - {sep.join(artist_lst)}")
 
     # pp.pprint(tracks)
+    return track_lst
 
 
 def get_user_playlists():
@@ -52,5 +60,6 @@ def get_user_playlists():
 
 
 if __name__ == "__main__":
-    playlists = get_user_playlists()
-    print(playlists)
+    # playlists = get_user_playlists()
+    # print(playlists)
+    print(get_tracks())
