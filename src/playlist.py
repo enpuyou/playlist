@@ -8,7 +8,7 @@ import pprint
 pp = pprint.PrettyPrinter(indent=4)
 
 emac_uri = "spotify:user:us8fmc9gg9bpnt2o2bn5p74p8"
-playlist_uri = "spotify:playlist:1Ne1izrcK7dCI1oKuq9nt1"
+# playlist_uri = "spotify:playlist:1Ne1izrcK7dCI1oKuq9nt1"
 
 sp = spotipy.Spotify(client_credentials_manager=SpotifyClientCredentials())
 # sp = spotipy.Spotify()
@@ -16,14 +16,14 @@ sp = spotipy.Spotify(client_credentials_manager=SpotifyClientCredentials())
 
 
 # get playlist
-def get_playlist_by_id():
+def get_playlist_by_id(playlist_uri):
     playlist = sp.playlist(playlist_uri)
     return playlist
     # print(playlist)
 
 
 # get tracks in the playlist
-def get_tracks():
+def get_tracks(playlist_uri):
     track_lst = []
     tracks = sp.playlist_tracks(playlist_uri)
 
@@ -52,14 +52,16 @@ def get_tracks():
 
 def get_user_playlists():
     # user = sp.user("us8fmc9gg9bpnt2o2bn5p74p8")
-    p_lst = {}
+    p_lst = []
     playlists = sp.user_playlists("us8fmc9gg9bpnt2o2bn5p74p8")
     for pl in playlists["items"]:
-        p_lst[pl["name"]] = pl["uri"]
+        p_lst.append({pl["name"]: pl["uri"]})
+        # p_lst[pl["name"]] = pl["uri"]
     return p_lst
 
 
 if __name__ == "__main__":
-    # playlists = get_user_playlists()
-    # print(playlists)
-    print(get_tracks())
+    playlists = get_user_playlists()
+    playlist_uri = "".join(playlists[0].values())
+    tracks = get_tracks(playlist_uri)
+    print(tracks)
