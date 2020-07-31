@@ -5,7 +5,7 @@ arts from Spotify.
 
 ## Steps to run
 
-- Install dependencies by running "poetry install"
+- Install dependencies by running: `poetry install`
 
 - Export authorization keys from Spotify to evironment variables:
 
