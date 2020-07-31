@@ -8,6 +8,7 @@ import pprint
 pp = pprint.PrettyPrinter(indent=4)
 
 emac_uri = "spotify:user:us8fmc9gg9bpnt2o2bn5p74p8"
+emac_id = "us8fmc9gg9bpnt2o2bn5p74p8"
 # playlist_uri = "spotify:playlist:1Ne1izrcK7dCI1oKuq9nt1"
 
 sp = spotipy.Spotify(client_credentials_manager=SpotifyClientCredentials())
@@ -40,9 +41,7 @@ def get_tracks(playlist_uri):
         print(f"track name: {track_name}")
         cover_art_url = track['track']['album']['images'][0]['url']
         print(f"cover art: {cover_art_url}")
-        # f = open(f'{track_name}.jpg', 'wb')
-        # f.write(requests.get(cover_art_url).content)
-        # f.close()
+        save_image_from_url(track_name, cover_art_url)
         sep = ", "
         track_lst.append(f"{index + 1}. {track_name} - {sep.join(artist_lst)}")
 
@@ -51,13 +50,18 @@ def get_tracks(playlist_uri):
 
 
 def get_user_playlists():
-    # user = sp.user("us8fmc9gg9bpnt2o2bn5p74p8")
     p_lst = []
-    playlists = sp.user_playlists("us8fmc9gg9bpnt2o2bn5p74p8")
+    playlists = sp.user_playlists(emac_id)
     for pl in playlists["items"]:
         p_lst.append({pl["name"]: pl["uri"]})
         # p_lst[pl["name"]] = pl["uri"]
     return p_lst
+
+
+def save_image_from_url(filename, image_url):
+    f = open(f'image/{filename}.jpg', 'wb')
+    f.write(requests.get(image_url).content)
+    f.close()
 
 
 if __name__ == "__main__":
