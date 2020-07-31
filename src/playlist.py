@@ -1,6 +1,8 @@
 import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
 
+import requests
+
 import pprint
 
 emac_uri = "spotify:user:us8fmc9gg9bpnt2o2bn5p74p8"
@@ -22,6 +24,12 @@ for track in tracks["items"]:
     print(f"album: {track['track']['album']['name']}")
     for artist in track['track']['artists']:
         print(f"artist: {artist['name']}")
-    print(f"track name: {track['track']['name']}")
+    track_name = track['track']['name']
+    print(f"track name: {track_name}")
+    cover_art_url = track['track']['album']['images'][0]['url']
+    print(f"cover art: {cover_art_url}")
+    f = open(f'{track_name}.jpg','wb')
+    f.write(requests.get(cover_art_url).content)
+    f.close()
 
 # pp.pprint(tracks)
